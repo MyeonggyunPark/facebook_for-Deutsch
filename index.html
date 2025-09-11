@@ -2,16 +2,17 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="static/img/logo.png" type="image/png">
   <title>Profile Link Card</title>
 </head>
 <body class="bg-gradient-to-b from-blue-100 to-cyan-100 min-h-screen flex items-center justify-center px-4">
-  <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl shadow-xl p-6 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl text-center">
+  <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl shadow-xl p-6 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl h-[400px] flex flex-col justify-around text-center">
     <!-- 타이틀 영역 -->
-    <div class="flex items-center justify-center gap-2 sm:gap-4 mb-6">
+    <div class="flex items-center justify-center gap-2 sm:gap-4">
       <img 
-        src="img/truck.png" 
+        src="static/img/truck.png" 
         alt="이사 트럭 아이콘" 
         class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
       />
@@ -19,34 +20,33 @@
         차량 이사/공항픽업
       </h1>
       <img 
-        src="img/airport.png" 
+        src="static/img/airport.png" 
         alt="비행기 아이콘" 
-        class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+        class="w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12"
       />
     </div>
 
-
     <!-- 링크 버튼들 -->
-    <div class="grid grid-cols-1 gap-4">
-    <a
-    href="https://forms.gle/J4KzCDTXwevFv9Pv9"
-    target="_blank"
-    class="block bg-white text-gray-800 font-semibold rounded-full py-3 shadow hover:bg-gray-100 transition text-sm sm:text-base"
-    >
-    문의하기
-    </a>
-    <a
-    href="map.html"
-    class="block bg-white text-gray-800 font-semibold rounded-full py-3 shadow hover:bg-gray-100 transition text-sm sm:text-base"
-    >
-    이사 현황
-    </a>
-    <a
-    href="#"
-    class="block bg-white text-gray-800 font-semibold rounded-full py-3 shadow hover:bg-gray-100 transition text-sm sm:text-base"
-    >
-    리뷰 보기
-    </a>
+    <div class="grid grid-cols-1 gap-8">
+      <a
+        href="https://forms.gle/J4KzCDTXwevFv9Pv9"
+        target="_blank"
+        class="block bg-white text-gray-800 font-semibold rounded-full py-3 shadow hover:bg-gray-100 transition text-sm sm:text-base"
+      >
+        문의하기
+      </a>
+      <a
+        href="map.html"
+        class="block bg-white text-gray-800 font-semibold rounded-full py-3 shadow hover:bg-gray-100 transition text-sm sm:text-base"
+      >
+        이사 현황
+      </a>
+      <a
+        href="#"
+        class="block bg-white text-gray-800 font-semibold rounded-full py-3 shadow hover:bg-gray-100 transition text-sm sm:text-base"
+      >
+        리뷰 보기
+      </a>
     </div>
   </div>
 </body>

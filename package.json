@@ -1,0 +1,26 @@
+{
+  "name": "facebook_werbung",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx @tailwindcss/cli -i ./static/css/input.css -o ./static/dist/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MyeonggyunPark/facebook_for-Deutsch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MyeonggyunPark/facebook_for-Deutsch/issues"
+  },
+  "homepage": "https://github.com/MyeonggyunPark/facebook_for-Deutsch#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.13"
+  }
+}
