@@ -1,268 +1,53 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="icon" href="img/logo.png" type="image/png">
-  <title>차량 이사/공항픽업</title>
-  <style>
-    /* 기본 스타일 */
-    body {
-      margin: 40px;
-      font-family: 'Segoe UI', sans-serif;
-      font-size: 18px;
-      background: #f9fafb;
-      color: #111827;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    h1 img {
-      max-width: 60px;
-      height: auto;
-    }
-
-    #map {
-      height: 600px;   
-      max-height: 75vh;
-      width: 100%;
-      border: 4px solid #111;
-      border-radius: 12px;
-      margin-bottom: 24px;
-    }
-
-    /* 버튼 영역: 그리드 */
-    #city-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* 버튼 스타일 */
-    .city-btn {
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-      color: #fff;
-      border: solid 2px #1d4ed8;
-      border-radius: 12px;
-      padding: 12px;
-      font-weight: bold;
-      font-size: 15px;
-      text-align: center;
-      white-space: nowrap;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-
-    .city-btn:hover {
-      border: solid 2px yellow;
-      color: yellow;
-    }
-
-    #a-list {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    
-    .a-link {
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: 600;
-      color: #1d4ed8;
-      border: solid 2px #1d4ed8;
-      border-radius: 5px;
-      padding: 5px 10px;
-    }
-
-    .a-link:hover {
-      background-color: #1d4ed8;
-      color: #f9fafb;
-    }
-
-    /* 태블릿 대응 */
-    @media (max-width: 1024px) {
-      body {
-        margin: 24px;
-        font-size: 16px;
-      }
-      h1 {
-        font-size: 1.6rem;
-        gap: 8px;
-      }
-      h1 img {
-        max-width: 50px;
-      }
-      #map {
-        height: 500px;
-      }
-      .city-btn {
-        font-size: 14px;
-        padding: 10px;
-      }
-    }
-
-    /* 모바일 대응 */
-    @media (max-width: 600px) {
-      body {
-        margin: 12px;
-        font-size: 14px;
-      }
-      h1 {
-        font-size: 1.2rem;
-        gap: 6px;
-      }
-      h1 img {
-        max-width: 40px;
-      }
-      #map {
-        height: 400px;
-      }
-      .city-btn {
-        font-size: 13px;
-        padding: 8px;
-      }
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Profile Link Card</title>
 </head>
-<body>
+<body class="bg-gradient-to-b from-blue-100 to-cyan-100 min-h-screen flex items-center justify-center px-4">
+  <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl shadow-xl p-6 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl text-center">
+    <!-- 타이틀 영역 -->
+    <div class="flex items-center justify-center gap-2 sm:gap-4 mb-6">
+      <img 
+        src="img/truck.png" 
+        alt="이사 트럭 아이콘" 
+        class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+      />
+      <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">
+        차량 이사/공항픽업
+      </h1>
+      <img 
+        src="img/airport.png" 
+        alt="비행기 아이콘" 
+        class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+      />
+    </div>
 
-  <h1 style="margin-bottom: 0;">
-    <img class="truck" src="img/truck.png" alt="이사 트럭 아이콘">
-    차량 이사/공항픽업 
-    <img class="airport" src="img/airport.png" alt="비행기 아이콘">
-  </h1>
-  <h1 style="margin-top: 0;">목적지 현황</h1>
-  <div id="a-list">
-    <a class="a-link" href="https://forms.gle/J4KzCDTXwevFv9Pv9" target="_blank">문의하기</a>
+
+    <!-- 링크 버튼들 -->
+    <div class="grid grid-cols-1 gap-4">
+    <a
+    href="https://forms.gle/J4KzCDTXwevFv9Pv9"
+    target="_blank"
+    class="block bg-white text-gray-800 font-semibold rounded-full py-3 shadow hover:bg-gray-100 transition text-sm sm:text-base"
+    >
+    문의하기
+    </a>
+    <a
+    href="map.html"
+    class="block bg-white text-gray-800 font-semibold rounded-full py-3 shadow hover:bg-gray-100 transition text-sm sm:text-base"
+    >
+    이사 현황
+    </a>
+    <a
+    href="#"
+    class="block bg-white text-gray-800 font-semibold rounded-full py-3 shadow hover:bg-gray-100 transition text-sm sm:text-base"
+    >
+    리뷰 보기
+    </a>
+    </div>
   </div>
-  
-  <div id="map"></div>
-  <p style="text-align: center; font-weight: bold; color: dimgray; font-size: 16px;">
-    ⬇️ 도시명 버튼을 누르면 지도에 위치가 표시됩니다.
-  </p>
-  <div id="city-list"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([51.1657, 10.4515], 6);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    // 🔹 파란색 & 빨간색 아이콘 정의
-    const blueIcon = new L.Icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
-
-    const redIcon = new L.Icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
-
-
-    const locations = [
-      { name: 'Aachen<br>(아헨)', lat: 50.775555, lng: 6.083611 },
-      { name: 'Augsburg<br>(아우크스부르크)', lat: 48.371700, lng: 10.898500 },
-      { name: 'Bad Soden<br>(바트 조덴)', lat: 50.139800, lng: 8.504600 },
-      { name: 'Brüssel<br>(브뤼셀)', lat: 50.8503, lng: 4.3517 },
-      { name: 'Berlin<br>(베를린)', lat: 52.520008, lng: 13.404954 },
-      { name: 'Bielefeld<br>(빌레펠트)', lat: 52.030200, lng: 8.532500 },
-      { name: 'Bochum<br>(보훔)', lat: 51.481800, lng: 7.216200 },
-      { name: 'Bonn<br>(본)', lat: 50.737400, lng: 7.098200 },
-      { name: 'Detmold<br>(데트몰트)', lat: 51.938000, lng: 8.873200 },
-      { name: 'Dortmund<br>(도르트문트)', lat: 51.514244, lng: 7.468429 },
-      { name: 'Düsseldorf<br>(뒤셀도르프)', lat: 51.227700, lng: 6.773500 },
-      { name: 'Eschborn<br>(애쉬본)', lat: 50.143600, lng: 8.571500 },
-      { name: 'Essen<br>(에센)', lat: 51.455643, lng: 7.011555 },
-      { name: 'Frankfurt<br>(프랑크푸르트)', lat: 50.110900, lng: 8.682100 },
-      { name: 'Frankfurt Flughafen<br>(프랑크푸르트 공항)', lat: 50.050000, lng: 8.570600 },
-      { name: 'Freiburg<br>(프라이부르크)', lat: 47.999000, lng: 7.842100 },
-      { name: 'Hagen<br>(하겐)', lat: 51.367100, lng: 7.463300 },
-      { name: 'Halle&nbsp;(Saale)<br>(할레잘레)', lat: 51.482800, lng: 11.969200 },
-      { name: 'Hamburg<br>(함부르크)', lat: 53.551100, lng: 9.993700 },
-      { name: 'Hamm<br>(함)', lat: 51.683334, lng: 7.816667 },
-      { name: 'Hannover<br>(하노버)', lat: 52.375900, lng: 9.732000 },
-      { name: 'Karlsruhe<br>(칼스루에)', lat: 49.006889, lng: 8.403653 },
-      { name: 'Koblenz<br>(코블렌츠)', lat: 50.356900, lng: 7.588900 },
-      { name: 'Köln<br>(쾰른)', lat: 50.937500, lng: 6.960300 },
-      { name: 'Krefeld<br>(크레펠트)', lat: 51.338800, lng: 6.585300 },
-      { name: 'Leipzig<br>(라이프치히)', lat: 51.339700, lng: 12.373100 },
-      { name: 'Liederbach am Taunus<br>(리더바흐 암 타우누스)', lat: 50.122500, lng: 8.493600 },
-      { name: 'Mainz<br>(마인츠)', lat: 49.992900, lng: 8.247300 },
-      { name: 'Mannheim<br>(만하임)', lat: 49.487500, lng: 8.466000 },
-      { name: 'Marburg<br>(마르부르크)', lat: 50.810001, lng: 8.770833 },
-      { name: 'Münster<br>(뮌스터)', lat: 51.960700, lng: 7.626100 },
-      { name: 'Nürnberg<br>(뉘른베르크)', lat: 49.460983, lng: 11.061859 },
-      { name: 'Osnabrück<br>(오스나브뤼크)', lat: 52.279900, lng: 8.047200 },
-      { name: 'Paris<br>(파리)', lat: 48.856600, lng: 2.352200 },
-      { name: 'Saarbrücken<br>(자르브뤼켄)', lat: 49.240200, lng: 6.996900 },
-      { name: 'Wuppertal<br>(부퍼탈)', lat: 51.256200, lng: 7.150800 },
-      { name: 'Würzburg<br>(뷔르츠부르크)', lat: 49.791300, lng: 9.953400 },
-      { name: 'Zwickau<br>(츠비카우)', lat: 50.718900, lng: 12.496400 },
-    ];
-
-    const markers = {};
-    let activeMarker = null; // 현재 빨간색 마커 추적
-
-    // 모든 도시 마커 기본은 파란색
-    locations.forEach(loc => {
-      const marker = L.marker([loc.lat, loc.lng], { icon: blueIcon })
-        .addTo(map)
-        .bindPopup(`<b>${loc.name}</b>`);
-      markers[loc.name] = marker;
-    });
-
-    // 버튼 생성
-    const cityListEl = document.getElementById('city-list');
-    locations.forEach(loc => {
-      const btn = document.createElement('button');
-      btn.innerHTML = loc.name;
-      btn.className = 'city-btn';
-
-      btn.addEventListener('click', () => {
-        // 이전 선택 마커를 다시 파란색으로
-        if (activeMarker) {
-          activeMarker.setIcon(blueIcon);
-          activeMarker.setZIndexOffset(0); // 🔹 기본 레벨로 복귀
-        }
-
-        // 현재 클릭된 도시 마커 빨간색으로
-        markers[loc.name].setIcon(redIcon);
-        markers[loc.name].setZIndexOffset(1000); // 🔹 항상 위로 올림
-        markers[loc.name].openPopup();
-
-        // 현재 마커 저장
-        activeMarker = markers[loc.name];
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-
-      cityListEl.appendChild(btn);
-    });
-
-    const group = new L.featureGroup(Object.values(markers));
-    map.fitBounds(group.getBounds());
-  </script>
 </body>
 </html>
