@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="icon" href="이사트럭이미지.png" type="image/png">
-  <title>차량 이사/공항픽업 목적지 지도</title>
+  <link rel="icon" href="img/logo.png" type="image/png">
+  <title>차량 이사/공항픽업</title>
   <style>
     /* 기본 스타일 */
     body {
@@ -70,6 +70,27 @@
       color: yellow;
     }
 
+    #a-list {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    
+    .a-link {
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 600;
+      color: #1d4ed8;
+      border: solid 2px #1d4ed8;
+      border-radius: 5px;
+      padding: 5px 10px;
+    }
+
+    .a-link:hover {
+      background-color: #1d4ed8;
+      color: #f9fafb;
+    }
+
     /* 태블릿 대응 */
     @media (max-width: 1024px) {
       body {
@@ -118,12 +139,15 @@
 <body>
 
   <h1 style="margin-bottom: 0;">
-    <img class="truck" src="truck.png" alt="이사 트럭 아이콘">
+    <img class="truck" src="img/truck.png" alt="이사 트럭 아이콘">
     차량 이사/공항픽업 
-    <img class="airport" src="airport.png" alt="비행기 아이콘">
+    <img class="airport" src="img/airport.png" alt="비행기 아이콘">
   </h1>
   <h1 style="margin-top: 0;">목적지 지도</h1>
-
+  <div id="a-list">
+    <a class="a-link" href="https://forms.gle/J4KzCDTXwevFv9Pv9" target="_blank">문의하기</a>
+  </div>
+  
   <div id="map"></div>
   <div id="city-list"></div>
 
