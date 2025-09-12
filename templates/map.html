@@ -73,7 +73,7 @@
       <!-- 지도 -->
       <div id="map" class="relative z-0 w-full h-[400px] sm:h-[450px] md:h-[500px] border-4 border-black rounded-xl mt-3 mb-6"></div>
 
-      <div class="flex justify-center gap-2 mb-5">
+      <div class="flex justify-center gap-2">
         <p class="text-2xl pt-4">⬇️</p>
         <div class="flex flex-col">
           <span class="text-gray-500 font-semibold text-base">주 이름을 클릭하면 도시 버튼이 나타납니다.</span>
@@ -81,11 +81,13 @@
         </div>
       </div>
 
-      <div id="city-list" class="flex flex-col gap-8"></div>
+      <div id="city-list" class="flex flex-col gap-8 mb-7 mt-3"></div>
     </div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
+    const root = document.scrollingElement || document.documentElement; 
+    
     const map = L.map("map").setView([51.2, 10.5], 6.5);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -175,9 +177,14 @@
       ]
     };
 
-    const sortedStates = Object.fromEntries(
-      Object.entries(states).sort((a, b) => a[0].localeCompare(b[0]))
-    );
+    let entries = Object.entries(states);
+    let etc = entries.find(([key]) => key === "기타 (해외)");
+    entries = entries.filter(([key]) => key !== "기타 (해외)");
+
+    const sortedStates = Object.fromEntries([
+      ...entries.sort((a, b) => a[0].localeCompare(b[0])),
+      etc
+    ]);
 
     const markers = {};
     let activeMarker = null;
@@ -199,9 +206,34 @@
       cityFlex.className = "flex flex-wrap gap-2 justify-center";
 
       toggleButton.addEventListener("click", () => {
-        cityContainer.classList.toggle("hidden");
-      });
+        // 1) 토글 "전"에 아래 끝에 붙어있는지 체크
+        const atBottom =
+          Math.abs(root.scrollHeight - (root.scrollTop + root.clientHeight)) < 2;
 
+        // 기존 토글
+        cityContainer.classList.toggle("hidden");
+
+        if (!cityContainer.classList.contains("hidden")) {
+          // 2) 레이아웃이 실제로 늘어난 뒤에 계산하도록 다음 프레임에서 처리
+          requestAnimationFrame(() => {
+            const rect = container.getBoundingClientRect();
+            const vh = root.clientHeight;
+
+            // 열렸는데 화면 아래로 넘친 만큼(보여야 할 부분이 가려진 양)
+            const overflow = rect.bottom - vh;
+
+            if (atBottom) {
+              // 3-a) 이미 페이지 맨 아래였다면 → 새로 늘어난 만큼의 "진짜" 끝까지 스크롤
+              root.scrollTo({ top: root.scrollHeight, behavior: "smooth" });
+            } else if (overflow > 0) {
+              // 3-b) 하단 근처(넘치는 경우)만 필요한 만큼만 부드럽게 아래로 이동
+              window.scrollBy({ top: overflow + 12, behavior: "smooth" }); // +12는 여백
+            }
+            // 3-c) 중간 위치면 스크롤 변화 없음
+          });
+        }
+      });
+        
       cities.forEach((loc) => {
         const marker = L.marker([loc.lat, loc.lng], { icon: blueIcon })
           .addTo(map)
