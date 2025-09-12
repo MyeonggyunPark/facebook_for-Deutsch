@@ -8,9 +8,9 @@
   <link rel="icon" href="../static/img/logo_icon.png" type="image/png">
   <title>이사한 도시 보기</title>
   <style>
-    html {
-      scroll-padding-top: 100px; /* sticky header height offset */
-    }
+    html { scroll-padding-top: 100px; }
+    /* 토글 섹션/버튼이 스크롤 앵커 후보가 되지 않도록 */
+    .no-anchor { overflow-anchor: none; }
   </style>
 </head>
 <body class="bg-gray-50">
@@ -194,46 +194,78 @@
     Object.entries(sortedStates).forEach(([stateName, cities]) => {
       const container = document.createElement("div");
       container.className = "border border-gray-300 rounded-xl shadow bg-white";
+      container.classList.add("no-anchor");
 
       const toggleButton = document.createElement("button");
       toggleButton.className = "w-full text-left p-4 text-lg font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-t-xl";
       toggleButton.textContent = stateName;
+      toggleButton.classList.add("no-anchor"); 
 
       const cityContainer = document.createElement("div");
       cityContainer.className = "p-4 hidden";
-
+      cityContainer.classList.add("no-anchor");
+      
       const cityFlex = document.createElement("div");
       cityFlex.className = "flex flex-wrap gap-2 justify-center";
+      cityContainer.classList.add("no-anchor");
+
+      // 즉시 스크롤 헬퍼(부드러운 스크롤과 섞이지 않게)
+      const withInstantScroll = (fn) => {
+        const prev = root.style.scrollBehavior;
+        root.style.scrollBehavior = "auto";
+        try { fn(); } finally { root.style.scrollBehavior = prev; }
+      };
+
+      const THRESH = 140; // 하단 근처 판단(px)
+      const MARGIN = 12;  // 여백
 
       toggleButton.addEventListener("click", () => {
-        // 1) 토글 "전"에 아래 끝에 붙어있는지 체크
-        const atBottom =
-          Math.abs(root.scrollHeight - (root.scrollTop + root.clientHeight)) < 2;
+        const vh = root.clientHeight;
 
-        // 기존 토글
+        // 클릭한 블록 정보
+        const isLast = (container === cityListEl.lastElementChild);
+
+        // 열리기 전 지표들
+        const beforeTop     = toggleButton.getBoundingClientRect().top;      // 버튼의 화면 Y
+        const beforeRect    = container.getBoundingClientRect();
+        const beforeHeight  = container.offsetHeight;                         // 컨테이너 높이
+        const nearBottom    = (vh - beforeRect.bottom) <= THRESH;             // 하단 근처?
+        const distToBottom  = root.scrollHeight - (root.scrollTop + vh);      // 바닥까지 거리
+
+        const wasCollapsed = cityContainer.classList.contains("hidden");
         cityContainer.classList.toggle("hidden");
 
-        if (!cityContainer.classList.contains("hidden")) {
-          // 2) 레이아웃이 실제로 늘어난 뒤에 계산하도록 다음 프레임에서 처리
+        // "열릴 때"만 처리
+        if (wasCollapsed && !cityContainer.classList.contains("hidden")) {
           requestAnimationFrame(() => {
-            const rect = container.getBoundingClientRect();
-            const vh = root.clientHeight;
+            const afterHeight = container.offsetHeight;
+            const deltaH      = afterHeight - beforeHeight;                   // ★ 늘어난 정확한 높이
+            const afterRect   = container.getBoundingClientRect();
+            const overflow    = afterRect.bottom - vh;                        // 화면 아래로 잘린 양(>0)
 
-            // 열렸는데 화면 아래로 넘친 만큼(보여야 할 부분이 가려진 양)
-            const overflow = rect.bottom - vh;
-
-            if (atBottom) {
-              // 3-a) 이미 페이지 맨 아래였다면 → 새로 늘어난 만큼의 "진짜" 끝까지 스크롤
-              root.scrollTo({ top: root.scrollHeight, behavior: "smooth" });
-            } else if (overflow > 0) {
-              // 3-b) 하단 근처(넘치는 경우)만 필요한 만큼만 부드럽게 아래로 이동
-              window.scrollBy({ top: overflow + 12, behavior: "smooth" }); // +12는 여백
+            // 1) 마지막 섹션: 매번 일관되게 아래로
+            if (isLast && (distToBottom <= 2 || nearBottom)) {
+              // 문서 바닥을 '늘어난 양'만큼 더 내려준다 (항상 같은 UX)
+              root.scrollTo({ top: root.scrollTop + deltaH, behavior: "smooth" });
+              return;
             }
-            // 3-c) 중간 위치면 스크롤 변화 없음
+
+            // 2) 마지막이 아닌 섹션: 하단 근처 + 실제로 잘렸다면 필요한 만큼만
+            if (!isLast && nearBottom && overflow > 0) {
+              root.scrollBy({ top: overflow + MARGIN, behavior: "smooth" });
+              return;
+            }
+
+            // 3) 그 외(중간/상단 등): 클릭한 바의 화면 위치를 유지(역보정, 즉시)
+            const afterTop  = toggleButton.getBoundingClientRect().top;
+            const deltaTop  = afterTop - beforeTop; // 보통 음수(위로 밀림)
+            if (Math.abs(deltaTop) > 1) {
+              withInstantScroll(() => root.scrollBy(0, -deltaTop));
+            }
           });
         }
       });
-        
+
       cities.forEach((loc) => {
         const marker = L.marker([loc.lat, loc.lng], { icon: blueIcon })
           .addTo(map)
